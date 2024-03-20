@@ -17,9 +17,68 @@ select * from Campaign
 -- Different color segments (categories) are provided by the company.
 
 SELECT COUNT(DISTINCT(Item_Category)) 
-FROM Item
+FROM Item;
 
 -- Different Coupon Types that are offered.
 
 SELECT COUNT(DISTINCT(couponType)) 
 FROM CouponMapping;
+
+-- States where the company is currently delivering its products and services.
+
+SELECT COUNT(DISTINCT(State)) 
+FROM CityData;
+
+-- Different Order Types.
+
+SELECT COUNT(DISTINCT(OrderType)) 
+FROM CustomerTransactionData;
+
+
+-- Identify the total number of sales (transactions) that happen yearly.
+
+SELECT Year(PurchaseDate) AS Years,
+COUNT(Trans_Id) as Total_Transaction
+FROM CustomerTransactionData
+GROUP BY Years;
+
+-- Identify the total number of sales (transactions) that happen quarterly.
+
+SELECT Quarter(PurchaseDate) AS Quarters, 
+COUNT(Trans_Id) as Total_Transaction
+FROM CustomerTransactionData
+GROUP BY Quarters
+ORDER BY Quarters DESC;
+
+-- Identify the total number of sales (transactions) that happen Yearly and Monthly.
+
+SELECT Year(PurchaseDate) AS Year,
+Month(PurchaseDate) AS Month,
+COUNT(Trans_Id) as Total_Transaction
+FROM CustomerTransactionData
+GROUP BY Year, Month
+ORDER BY Total_Transaction DESC;
+
+
+
+-- Identify the total purchase order by Product category.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

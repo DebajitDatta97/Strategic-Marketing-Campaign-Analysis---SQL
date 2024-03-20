@@ -155,6 +155,37 @@ WHERE Trans_Id IN
 
 
 
+Understanding the growth and decline of the company.
+
+The marketing team is interested in understanding the growth and decline pattern of the company in terms of new leads or sales amount by the customers.
+
+
+
+
+-- Identify the total growth on a year-by-year basis based on the quantity of paint that's sold. 
+
+SELECT EXTRACT(Year FROM PurchaseDate) as Year_of_Sale, 
+SUM(quantity) as Quantity_Sold, 
+SUM(PurchasingAmt) as Total_Purchased_Amount
+FROM CustomerTransactionData
+GROUP BY Year_of_Sale
+ORDER BY Quantity_Sold ASC;
+
+
+
+
+--  Identify the total growth on a year-by-year basis based on the amount of paint that's sold.
+
+SELECT EXTRACT(Year FROM PurchaseDate) as Year_of_Sale, 
+SUM(quantity) as Quantity_Sold, 
+SUM(PurchasingAmt) as Total_Purchased_Amount
+FROM CustomerTransactionData
+GROUP BY Year_of_Sale
+ORDER BY Year_of_Sale ASC;
+
+
+
+-- Identify the total growth on a year-by-year basis for Customers that are acquired [New + Repeated]. 
 
 
 

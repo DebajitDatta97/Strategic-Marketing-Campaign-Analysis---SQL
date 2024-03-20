@@ -14,25 +14,34 @@ select * from Campaign
 
 -- Checking out the cardinality of various columns:
 
+
+
 -- Different color segments (categories) are provided by the company.
 
 SELECT COUNT(DISTINCT(Item_Category)) 
 FROM Item;
+
+
 
 -- Different Coupon Types that are offered.
 
 SELECT COUNT(DISTINCT(couponType)) 
 FROM CouponMapping;
 
+
+
 -- States where the company is currently delivering its products and services.
 
 SELECT COUNT(DISTINCT(State)) 
 FROM CityData;
 
+
+
 -- Different Order Types.
 
 SELECT COUNT(DISTINCT(OrderType)) 
 FROM CustomerTransactionData;
+
 
 
 -- Identify the total number of sales (transactions) that happen yearly.
@@ -42,6 +51,8 @@ COUNT(Trans_Id) as Total_Transaction
 FROM CustomerTransactionData
 GROUP BY Years;
 
+
+
 -- Identify the total number of sales (transactions) that happen quarterly.
 
 SELECT Quarter(PurchaseDate) AS Quarters, 
@@ -49,6 +60,8 @@ COUNT(Trans_Id) as Total_Transaction
 FROM CustomerTransactionData
 GROUP BY Quarters
 ORDER BY Quarters DESC;
+
+
 
 -- Identify the total number of sales (transactions) that happen Yearly and Monthly.
 
@@ -60,8 +73,58 @@ GROUP BY Year, Month
 ORDER BY Total_Transaction DESC;
 
 
-
 -- Identify the total purchase order by Product category.
+
+SELECT i.Item_Category, SUM(cus.PurchasingAmt) AS Total_Purchasing_Amount
+FROM CustomerTransactionData cus
+LEFT JOIN Item i ON cus.item_id = i.Item_Id
+GROUP BY Item_Category 
+ORDER BY Total_Purchasing_Amount DESC;
+
+
+
+-- Identify the total purchase order on a Yearly and Quarterly basis.
+
+SELECT Year(PurchaseDate) AS Year,
+Quarter(PurchaseDate) AS Quarters,
+COUNT(Trans_Id) as Total_Transaction
+FROM CustomerTransactionData
+GROUP BY Year, Quarters
+ORDER BY Total_Transaction DESC;
+
+
+
+-- Identify the total purchase order on an Order-type basis.
+
+SELECT OrderType, SUM(PurchasingAmt) AS Total_Purchasing_Amount
+FROM CustomerTransactionData
+GROUP BY OrderType
+ORDER BY Total_Purchasing_Amount DESC;
+
+
+
+-- Identify the total purchase order on a city-tier basis.
+
+SELECT cd.CityTier, SUM(PurchasingAmt) AS Total_Purchasing_Amount
+FROM Customer c 
+LEFT JOIN CityData cd  ON c.City_Id = cd.City_Id
+LEFT JOIN CustomerTransactionData cus ON cus.Cust_Id = c.Customer_Id
+GROUP BY cd.CityTier 
+ORDER BY Total_Purchasing_Amount DESC;
+
+
+
+
+
+
+
+
+The company wants to understand the customer's path to conversion as a potential purchaser based on our campaigns.
+
+-- Identifying the total number of transactions with campaign coupons vs the total number of transactions without campaign coupons.
+
+
+
 
 
 

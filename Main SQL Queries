@@ -1,8 +1,25 @@
-Getting the overview of the data.
+-- Getting the overview of the data.
 
-Checking out the cardinality of various columns:
+select * from Customer
 
-Different color segments (categories) are provided by the company!
+select * from Item
 
+select * from CustomerTransactionData
 
+select * from CouponMapping
 
+select * from CityData
+
+select * from Campaign
+
+-- Checking out the cardinality of various columns:
+
+-- Different color segments (categories) are provided by the company.
+
+SELECT COUNT(DISTINCT(Item_Category)) 
+FROM Item
+
+-- Different Coupon Types that are offered.
+
+SELECT COUNT(DISTINCT(couponType)) 
+FROM CouponMapping;

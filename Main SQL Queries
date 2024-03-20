@@ -121,8 +121,34 @@ ORDER BY Total_Purchasing_Amount DESC;
 
 The company wants to understand the customer's path to conversion as a potential purchaser based on our campaigns.
 
+
+
 -- Identifying the total number of transactions with campaign coupons vs the total number of transactions without campaign coupons.
 
+SELECT 'With Coupon' as Coupon_Yes_No,
+COUNT(Trans_Id) as Total_Transactions_With_Coupon
+FROM CustomerTransactionData
+WHERE campaign_id is null
+UNION ALL
+SELECT 'Without Coupon' as Coupon_Yes_No,
+COUNT(Trans_Id) as Total_Transactions_Without_Coupon
+FROM CustomerTransactionData
+WHERE campaign_id is not null;
+
+
+
+--  Identify the number of customers with the first purchase done with or without campaign coupons.
+
+SELECT COUNT(coupon_id) as Total_Customers_With_Coupon, 
+COUNT(*) - COUNT(coupon_id) as Total_Customers_Without_Coupon
+FROM CustomerTransactionData
+WHERE Trans_Id IN 
+                 (
+                    SELECT
+                    FIRST_Value(Trans_Id) OVER (PARTITION BY Cust_Id ORDER BY PurchaseDate RANGE BETWEEN 
+                    UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS First_Transaction_Id
+                    FROM CustomerTransactionData
+                 );
 
 
 

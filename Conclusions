@@ -1,0 +1,51 @@
+After going through the problems, and dataset and after careful execution of SQL queries, we come to the conclusion -
+
+Here is what we found about the dataset.
+
+1. There are 5 different color categories provided by the company.
+
+2. Two different types of Coupons are being offered.
+
+3. The company's delivery service is operational in 21 states currently.
+
+4. There are 3 different order types.
+
+5. Every year, the Maximum number of transactions is for 2020 at 102 & minimum number of transactions is for 2023 at 06.
+   It shows that 2 years ago, the volume of transactions was quite large compared to the current time and there is a decline.
+
+6. Quarterly, the Maximum number of transactions for Quarter 4 at 130 & minimum number of transactions is for Quarter 2 at 31.
+   It means that people purchase Colours only during the festive season time and year-end. 
+
+7. On a Yearly & Monthly basis, the Maximum number of transactions that happened in the last month of 2020 at 48.
+   If considered month-wise, the purchases happen mostly at the Year-end.
+
+8. If we go by total purchases by product category, then the sales are for Oil paint and Min sales are for Synthetic paint.
+   People like Oil paint more than Synthetic paint.
+
+9. If we go by total purchases on a Yearly and Quarterly basis, then Max sales are for the last quarter of 2020.
+
+10. If we go by total purchases by Order Type, then Max sales are for household order type.
+
+11. If we go by total purchases by City Tier, Max sales are for City Tier 2.
+
+12. Number of transactions with coupons is 186 while without coupons is 114. 
+    It means that many customers use coupon codes for the transactions which possibly means they regularly visit the site for offers and can be potential permanent customers.
+    Even though customers without coupon codes are there, the positive thing is that, if a good amount of advertisement can be done, then they too can translate as potential repeat customers.
+
+13. The number of customers having their first purchase with a coupon surpasses their counterparts.
+    It means people actively visit the site for offers. It also means promotional coupons are working in bringing more volume orders.
+    It is now up to the quality of customer support and satisfaction that will matter the most.
+
+14. Based on the quantity of paint that's sold the company made steady growth in the past 2 years and saw a declining pattern in the current year.
+
+15. Based on the amount of paint that's sold the company saw growth in the first 2 years and then a declining pattern since then.
+
+16. Number of Customers in 2022 = 55, 2021 = 47, 2020 - 71, 2019 - 51
+
+17. The Household order type has done exceptionally well in acquiring new and retaining existing customers compared to the rest of the 2 order types.
+
+18. Based on the above data, a Brand Awareness campaign can be launched and a Seasonal campaign can be launched.
+
+19. Maximum transactions happened for the combination of items 13 and 16 with total transactions of 8
+
+20. The most popular combination in the household sector is Item No 13 and Item No 16

@@ -162,7 +162,7 @@ The marketing team is interested in understanding the growth and decline pattern
 
 
 
--- Identify the total growth on a year-by-year basis based on the quantity of paint that's sold. 
+-- Identify the total growth year-by-year based on the quantity of paint sold. 
 
 SELECT EXTRACT(Year FROM PurchaseDate) as Year_of_Sale, 
 SUM(quantity) as Quantity_Sold, 
@@ -185,7 +185,13 @@ ORDER BY Year_of_Sale ASC;
 
 
 
--- Identify the total growth on a year-by-year basis for Customers that are acquired [New + Repeated]. 
+-- Identify the total growth on a year-by-year basis for Customers acquired [New + Repeated]. 
+
+SELECT COUNT(DISTINCT(Cust_Id)) as Customer_Ids, EXTRACT(Year FROM PurchaseDate) as Year
+FROM CustomerTransactionData
+WHERE EXTRACT(Year FROM PurchaseDate) < 2023
+GROUP BY Year
+ORDER BY Year DESC;
 
 
 
@@ -194,10 +200,100 @@ ORDER BY Year_of_Sale ASC;
 
 
 
+Market basket analysis
+
+A market basket analysis is defined as a customer’s overall buying pattern for different sets of products.
+Essentially, the marketing team wants to understand customer purchasing patterns. 
+Their proposal is if they promote the products in their next campaign, which are bought a couple of times together, then this will increase the revenue for the company.
+
+
+-- Identify the dates when the same customer has purchased some product from the company outlets.
+
+SELECT C1.Cust_Id, C1.PurchaseDate AS PurchaseDate1, C2.PurchaseDate AS PurchaseDate
+FROM CustomerTransactionData AS C1
+INNER JOIN CustomerTransactionData AS C2 ON C1.Cust_Id = C2.Cust_Id 
+WHERE C1.Trans_Id != C2.Trans_Id AND C1.OrderType = C2.OrderType AND C1.item_id != C2.item_id;
 
 
 
 
+-- Out of the first query where you have captured a repeated set of customers, Identify the same combination of products coming at least thrice sorted in descending order of their appearance.
+
+SELECT C1.OrderType, CONCAT( C1.item_id, "," , C2.item_id) AS Item_Combination, 
+COUNT(*) AS TotalTransaction
+FROM CustomerTransactionData AS C1
+INNER JOIN CustomerTransactionData AS C2
+ON C1.Cust_Id = C2.Cust_Id
+WHERE C1.Trans_Id != C2.Trans_Id 
+AND C1.OrderType = C2.OrderType
+AND C1.item_id != C2.item_id
+GROUP BY C1.OrderType,Item_Combination
+HAVING COUNT(*) >= 3
+ORDER BY TotalTransaction DESC;
+
+
+
+
+
+
+
+
+Automating tasks
+
+-- Creating a Function to get the total discount.
+
+DELIMITER $$
+CREATE FUNCTION Discount (Quantity INT, Price INT, PurchasingAmt FLOAT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+     SET Discount INT;
+     Discount = Quantity * Price - PurchasingAmt;
+     RETURN Discount;
+END $$
+DELIMITER
+
+
+SELECT Discount( Quantity, Price, PurchasingAmt) as Dicounted_Amount
+FROM CustomerTransactionData;
+
+
+
+
+
+-- Get the days/month/year elapsed since the last purchase of a customer depending on input from the user.
+
+DELIMITER $$
+CREATE FUNCTION Time_Elapsed
+(val varchar(4), date_last_purchase date)
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    DECLARE time_elapsed INT;
+    SET time_elapsed = IF(val='day', DATEDIFF(NOW(), date_last_purchase), YEAR(NOW()) - YEAR(date_last_purchase));
+    RETURN time_elapsed; 
+END$$
+DELIMITER ;
+
+
+
+
+
+-- Create a stored Procedure to check if there is any customer with age < 12. Print out the total of such customers on-screen.
+
+DELIMITER $$
+CREATE PROCEDURE CustomerAgeValidation (OUT p2 varchar(128))
+BEGIN 
+    SELECT COUNT(*)
+    INTO p2
+    FROM Customer
+    WHERE YEAR(NOW()) - YEAR(Birthdate) <= 12;
+END $$
+DELIMITER ;
+
+
+CALL CustomerAgeValidation( @p1);
+SELECT @p1
 
 
 
